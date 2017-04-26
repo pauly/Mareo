@@ -186,16 +186,19 @@ let process_collision (dir : Actors.dir_2d) (c1 : Object.collidable)
   | (Enemy(t1,s1,o1), Block(t2,s2,o2), East)
   | (Enemy(t1,s1,o1), Block(t2,s2,o2), West)->
     begin match (t1,t2) with
-    | (RKoopaShell, Brick) | (GKoopaShell, Brick) ->
+    (* cc @hongbo lol uncomment this to get a compiler error *)
+(*     | (RKoopaShell, Brick) | (GKoopaShell, Brick) ->
         dec_health o2;
         reverse_left_right o1;
         (None,None)
-    | (RKoopaShell, QBlock typ) | (GKoopaShell, QBlock typ) ->
+*)
+(*     | (RKoopaShell, QBlock typ) | (GKoopaShell, QBlock typ) ->
         let updated_block = evolve_block o2 context in
         let spawned_item = spawn_above o1.dir o2 typ context in
          rev_dir o1 t1 s1;
         (Some updated_block, Some spawned_item)
-    | (_,_) ->
+      (None,None)
+ *)    | (_,_) ->
         rev_dir o1 t1 s1;
       (None,None)
     end
