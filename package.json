@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/mahsu/MariOCaml#readme",
   "devDependencies": {
-    "bs-platform": "^1.7.1",
+    "bs-platform": "https://github.com/bloomberg/bucklescript.git",
     "webpack": "^2.4.1"
   }
 }

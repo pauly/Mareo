@@ -1,5 +1,7 @@
 Fork of https://github.com/mahsu/MariOCaml, compiled using [BuckleScript](https://github.com/bloomberg/bucklescript) instead of js_of_ocaml.
 
+[Play it live!](http://zhanghongbo.me/MariOCaml/)
+
 ```
 git clone https://github.com/chenglou/MariOCaml.git
 cd MariOCaml
