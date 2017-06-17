@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "bsb -w",
-    "pack-for-non-safari": "rollup --config"
+    "pack-for-non-safari": "rollup --input ./lib/es6_global/main.js --format iife --output docs/all.js"
   },
   "repository": {
     "type": "git",
