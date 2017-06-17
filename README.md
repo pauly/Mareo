@@ -1,12 +1,12 @@
 Fork of https://github.com/mahsu/MariOCaml, compiled using [BuckleScript](https://github.com/bucklescript/bucklescript) instead of js_of_ocaml.
 
-[Play it live!](http://chenglou.github.io/MariOCaml/)
+[Play it live!](http://chenglou.github.io/Mareo/)
 
 ## Run It Yourself
 
 ```
-git clone https://github.com/chenglou/MariOCaml.git
-cd MariOCaml
+git clone https://github.com/chenglou/Mareo.git
+cd Mareo
 npm install
 npm start
 ```

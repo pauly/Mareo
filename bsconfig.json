@@ -1,5 +1,5 @@
 {
-  "name": "MariOCaml",
+  "name": "Mareo",
   "sources": ".",
   "package-specs": ["es6-global"],
 }
