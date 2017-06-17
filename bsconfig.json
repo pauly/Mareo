@@ -1,5 +1,5 @@
 {
   "name": "Mareo",
-  "sources": ".",
+  "sources": "src",
   "package-specs": ["es6-global"],
 }
