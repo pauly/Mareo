@@ -1,4 +1,3 @@
-open Sprite
 open Actors
 open Particle
 
@@ -30,10 +29,10 @@ type obj = {
 }
 
 type collidable =
-  | Player of pl_typ * sprite * obj
-  | Enemy of enemy_typ * sprite * obj
-  | Item of item_typ * sprite * obj
-  | Block of block_typ * sprite * obj
+  | Player of pl_typ * Sprite.sprite * obj
+  | Enemy of enemy_typ * Sprite.sprite * obj
+  | Item of item_typ * Sprite.sprite * obj
+  | Block of block_typ * Sprite.sprite * obj
 
 
 (* Returns the sprite associated with the object *)
@@ -63,7 +62,7 @@ val process_obj : obj -> float -> unit
 
 val update_player : obj -> Actors.controls list
                         -> Dom_html.canvasRenderingContext2D
-                        -> (pl_typ * sprite) option
+                        -> (pl_typ * Sprite.sprite) option
 
 (* Checks whether a collision occured between two objects, returning the
  * direction of the collision if one occurred. *)

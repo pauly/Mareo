@@ -2,6 +2,8 @@ Fork of https://github.com/mahsu/MariOCaml, compiled using [BuckleScript](https:
 
 [Play it live!](http://chenglou.github.io/MariOCaml/)
 
+## Run It Yourself
+
 ```
 git clone https://github.com/chenglou/MariOCaml.git
 cd MariOCaml

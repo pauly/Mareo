@@ -1,5 +1,4 @@
 open Actors
-open Sprite
 
 type part_params = {
   sprite: Sprite.sprite;
@@ -25,7 +24,7 @@ let pair_to_xy pair = {
 
 (* Function wrapper to assist in generating the template paramss for a
  * particle. *)
-let make_params sprite rot lifetime = 
+let make_params sprite rot lifetime =
   {
     sprite;
     rot;
@@ -46,10 +45,10 @@ let make_type typ ctx =
   | Score2000 as t -> make_params (Sprite.make_particle t ctx) 0. 30
   | Score4000 as t -> make_params (Sprite.make_particle t ctx) 0. 30
   | Score8000 as t -> make_params (Sprite.make_particle t ctx) 0. 30
-  
+
 let make ?vel:(vel=(0.,0.)) ?acc:(acc=(0.,0.)) part_type pos ctx =
   let params = make_type part_type ctx in
-  let pos = pair_to_xy pos and vel = pair_to_xy vel 
+  let pos = pair_to_xy pos and vel = pair_to_xy vel
                            and acc = pair_to_xy acc in
   {
     params;
@@ -60,8 +59,8 @@ let make ?vel:(vel=(0.,0.)) ?acc:(acc=(0.,0.)) part_type pos ctx =
     kill = false;
     life = params.lifetime;
   }
-   
-let make_score score pos ctx = 
+
+let make_score score pos ctx =
   let t = match score with
   | 100 -> Score100
   | 200 -> Score200
@@ -77,15 +76,15 @@ let make_score score pos ctx =
 (* Mutably update the velocity of a particle *)
 let update_vel part =
   part.vel.x <- (part.vel.x +. part.acc.x);
-  part.vel.y <- (part.vel.y +. part.acc.y) 
+  part.vel.y <- (part.vel.y +. part.acc.y)
 
 (* Mutably update the position of a particle *)
 let update_pos part =
   part.pos.x <- (part.vel.x +. part.pos.x);
   part.pos.y <- (part.vel.y +. part.pos.y)
-  
+
 let process part =
   part.life <- part.life - 1;
   if part.life = 0 then (part.kill <- true);
   update_vel part;
-  update_pos part 
+  update_pos part

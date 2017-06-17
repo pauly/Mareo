@@ -1,6 +1,4 @@
-open Sprite
 open Actors
-open Particle
 
 (*Variables*)
 let friction = 0.9
@@ -40,10 +38,10 @@ type obj = {
 }
 
 type collidable =
-  | Player of pl_typ * sprite * obj
-  | Enemy of enemy_typ * sprite * obj
-  | Item of item_typ * sprite * obj
-  | Block of block_typ * sprite * obj
+  | Player of pl_typ * Sprite.sprite * obj
+  | Enemy of enemy_typ * Sprite.sprite * obj
+  | Item of item_typ * Sprite.sprite * obj
+  | Block of block_typ * Sprite.sprite * obj
 
 
 (*setup_obj is used to set gravity and speed, with default values true and 1.*)
@@ -80,7 +78,7 @@ let make_enemy = function
   | RKoopaShell -> setup_obj ~spd:3. ()
 
 let make_block = function
-  | QBlock i -> setup_obj ~g:false ()
+  | QBlock _ -> setup_obj ~g:false ()
   | QBlockUsed -> setup_obj ~g:false ()
   | Brick -> setup_obj ~g:false ()
   | UnBBlock -> setup_obj ~g:false ()
@@ -89,7 +87,7 @@ let make_block = function
   | Ground -> setup_obj ~g: false ()
 
 let make_type = function
-  | SPlayer(pt,t) -> make_player ()
+  | SPlayer _ -> make_player ()
   | SEnemy t -> make_enemy t
   | SItem t -> make_item t
   | SBlock t -> make_block t
@@ -127,7 +125,7 @@ let make ?id:(id=None) ?dir:(dir=Left) spawnable context (posx, posy) =
 let spawn spawnable context (posx, posy) =
   let (spr,obj) = make spawnable context (posx, posy) in
   match spawnable with
-  | SPlayer(typ,t) -> Player(typ,spr,obj)
+  | SPlayer(typ,_) -> Player(typ,spr,obj)
   | SEnemy t ->
       set_vel_to_speed obj;
       Enemy(t,spr,obj)
@@ -278,7 +276,7 @@ let evolve_enemy player_dir typ (spr:Sprite.sprite) obj context =
   | _ -> obj.kill <- true; None
 
 (*Updates the direction of the sprite. *)
-let rev_dir o t (s:sprite) =
+let rev_dir o t (s:Sprite.sprite) =
   reverse_left_right o;
   let old_params = s.params in
   Sprite.transform_enemy t s o.dir;
@@ -299,11 +297,11 @@ let evolve_block obj context =
   Block(QBlockUsed,new_spr,new_obj)
 
 (*Used for making a small Mario into a Big Mario*)
-let evolve_player (spr : Sprite.sprite) obj context =
+(* let evolve_player (spr : Sprite.sprite) obj context =
   let (new_spr,new_obj) =
     make (SPlayer (BigM,Standing)) context (obj.pos.x, obj.pos.y) in
   normalize_pos new_obj.pos spr.params new_spr.params ;
-  Player(BigM,new_spr,new_obj)
+  Player(BigM,new_spr,new_obj) *)
 
 (*Used for spawning items above question mark blocks*)
 let spawn_above player_dir obj typ context =
@@ -362,7 +360,7 @@ let check_collision c1 c2 =
 (*"Kills" the matched object by setting certain parameters for each.*)
 let kill collid ctx =
   match collid with
-  | Enemy(t,s,o) ->
+  | Enemy(t,_,o) ->
       let pos = (o.pos.x,o.pos.y) in
       let score = if o.score > 0 then [Particle.make_score o.score pos ctx] else [] in
       let remains = begin match t with
@@ -370,7 +368,7 @@ let kill collid ctx =
       | _ -> []
       end in
       score @ remains
-  | Block(t,s,o) ->
+  | Block(t,_,o) ->
       begin match t with
       | Brick ->
           let pos = (o.pos.x,o.pos.y) in
@@ -381,7 +379,7 @@ let kill collid ctx =
           [p1;p2;p3;p4]
       | _ -> []
       end
-  | Item(t,s,o) ->
+  | Item(t,_,o) ->
       begin match t with
       | Mushroom -> [Particle.make_score o.score (o.pos.x,o.pos.y) ctx]
       | _ -> []

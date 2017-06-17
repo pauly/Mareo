@@ -250,7 +250,7 @@ let rec convert_to_coin_obj (lst:obj_coord list)
 (*Procedurally generates a list of collidables given canvas width, height and
 * context. Arguments block width (blockw) and block height (blockh) are in
 * block form, not pixels.*)
-let generate_helper (blockw:float) (blockh:float) (cx:float) (cy:float)
+let generate_helper (blockw:float) (blockh:float) (_cx:float) (_cy:float)
             (context:Dom_html.canvasRenderingContext2D) : collidable list =
   let block_locs = generate_block_locs blockw blockh 0. 0. [] in
   let converted_block_locs = trim_edges (convert_list block_locs)

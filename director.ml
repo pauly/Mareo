@@ -1,8 +1,7 @@
 open Sprite
 open Object
 open Actors
-open Viewport
-open Particle
+(* open Viewport *)
 
 (* Represents the values of relevant key bindings. *)
 type keys = {
@@ -24,7 +23,7 @@ type keys = {
 type st = {
   bgd: sprite;
   ctx: Dom_html.canvasRenderingContext2D;
-  vpt: viewport;
+  vpt: Viewport.viewport;
   map: float;
   mutable score: int;
   mutable coins: int;
@@ -60,6 +59,7 @@ let update_score state i =
  *case that the enemy is a shell. Invulnerability, jumping, and grounded
  *are used for fine tuning the movements.*)
 let player_attack_enemy s1 o1 typ s2 o2 state context =
+  ignore s1;
   o1.invuln <- 10;
   o1.jumping <- false;
   o1.grounded <- true;
@@ -87,6 +87,7 @@ let player_attack_enemy s1 o1 typ s2 o2 state context =
 
 (*enemy_attack_player is used when an enemy kills a player.*)
 let enemy_attack_player s1 (o1:Object.obj) t2 s2 (o2:Object.obj) context =
+  ignore s1;
   begin match t2 with
   | GKoopaShell |RKoopaShell ->
       let r2 = if o2.vel.x = 0. then evolve_enemy o1.dir t2 s2 o2 context
@@ -126,7 +127,7 @@ let col_enemy_enemy t1 s1 o1 t2 s2 o2 dir =
   end
 
 (* Gets the object at a given position *)
-let obj_at_pos dir (pos: xy) (collids: Object.collidable list)
+(* let obj_at_pos dir (pos: xy) (collids: Object.collidable list)
                                             : Object.collidable list =
   match dir with
   | Left -> List.filter (fun (col: Object.collidable) ->
@@ -134,20 +135,20 @@ let obj_at_pos dir (pos: xy) (collids: Object.collidable list)
             collids
   | _ -> List.filter (fun (col: Object.collidable) ->
       (get_obj col).pos.y = pos.y && (get_obj col).pos.x = pos.x +. 16.)
-            collids
+            collids *)
 
 (* Returns whether the object at a given position is a block *)
-let is_block dir pos collids =
+(* let is_block dir pos collids =
   match obj_at_pos dir pos collids with
   | [] -> false
   | [Block (_,_,_)] -> true
-  | _ -> false
+  | _ -> false *)
 
 (* Returns whether the given object is a red koopa *)
-let is_rkoopa collid =
+(* let is_rkoopa collid =
   match collid with
   | Enemy(RKoopa,_,_) -> true
-  | _ -> false
+  | _ -> false *)
 
 (* Process collision is called to match each of the possible collisions that
  * may occur. Returns a pair of collidable options, representing objects that
@@ -165,8 +166,8 @@ let process_collision (dir : Actors.dir_2d) (c1 : Object.collidable)
   | (Player(_,s1,o1), Enemy(t2,s2,o2), _)
   | (Enemy(t2,s2,o2), Player(_,s1,o1), _) ->
       enemy_attack_player s1 o1 t2 s2 o2 context
-  | (Player(_,s1,o1), Item(t2,s2,o2), _)
-  | (Item(t2,s2,o2), Player(_,s1,o1), _) ->
+  | (Player(_,_,o1), Item(t2,_,o2), _)
+  | (Item(t2,_,o2), Player(_,_,o1), _) ->
       begin match t2 with
       | Mushroom ->
           dec_health o2;
@@ -183,8 +184,8 @@ let process_collision (dir : Actors.dir_2d) (c1 : Object.collidable)
       end
   | (Enemy(t1,s1,o1), Enemy(t2,s2,o2), dir) ->
       col_enemy_enemy t1 s1 o1 t2 s2 o2 dir
-  | (Enemy(t1,s1,o1), Block(t2,s2,o2), East)
-  | (Enemy(t1,s1,o1), Block(t2,s2,o2), West)->
+  | (Enemy(t1,s1,o1), Block(t2,_,o2), East)
+  | (Enemy(t1,s1,o1), Block(t2,_,o2), West)->
     begin match (t1,t2) with
     | (RKoopaShell, Brick) | (GKoopaShell, Brick) ->
         dec_health o2;
@@ -199,15 +200,15 @@ let process_collision (dir : Actors.dir_2d) (c1 : Object.collidable)
         rev_dir o1 t1 s1;
       (None,None)
     end
-  | (Item(_,s1,o1), Block(typ2,s2,o2), East)
-  | (Item(_,s1,o1), Block(typ2,s2,o2), West) ->
+  | (Item(_,_,o1), Block(_,_,_), East)
+  | (Item(_,_,o1), Block(_,_,_), West) ->
       reverse_left_right o1;
       (None, None)
-  | (Enemy(_,s1,o1), Block(typ2,s2,o2), _)
-  | (Item(_,s1,o1), Block(typ2,s2,o2), _) ->
+  | (Enemy(_,_,o1), Block(_,_,_), _)
+  | (Item(_,_,o1), Block(_,_,_), _) ->
       collide_block dir o1;
       (None, None)
-  | (Player(t1,s1,o1), Block(t,s2,o2), North) ->
+  | (Player(t1,_,o1), Block(t,_,o2), North) ->
       begin match t with
       | QBlock typ ->
           let updated_block = evolve_block o2 context in
@@ -220,7 +221,7 @@ let process_collision (dir : Actors.dir_2d) (c1 : Object.collidable)
       | Panel -> Draw.game_win state.ctx; (None,None)
       | _ -> collide_block dir o1; (None,None)
       end
-  | (Player(_,s1,o1), Block(t,s2,o2), _) ->
+  | (Player(_,_,o1), Block(t,_,_), _) ->
     begin match t with
     | Panel -> Draw.game_win state.ctx; (None,None)
     | _ ->
@@ -234,14 +235,14 @@ let process_collision (dir : Actors.dir_2d) (c1 : Object.collidable)
 (* Run the broad phase object filtering *)
 let broad_phase collid all_collids state =
   let obj = get_obj collid in
-  List.filter (fun c ->
-    in_viewport state.vpt obj.pos || is_player collid ||
-      out_of_viewport_below state.vpt obj.pos.y) all_collids
+  List.filter (fun _c ->
+    Viewport.in_viewport state.vpt obj.pos || is_player collid ||
+      Viewport.out_of_viewport_below state.vpt obj.pos.y) all_collids
 
 (*narrow_phase of collision is used in order to continuously loop through
  *each of the collidable objects to constantly check if collisions are
  *occurring.*)
-let rec narrow_phase c cs state =
+let narrow_phase c cs state =
   let rec narrow_helper c cs state acc =
     match cs with
     | [] -> acc
@@ -301,15 +302,15 @@ let update_collidable state (collid:Object.collidable) all_collids =
   let spr = Object.get_sprite collid in
   obj.invuln <- if obj.invuln > 0 then obj.invuln - 1 else 0;
   (* Prevent position from being updated outside of viewport *)
-  let viewport_filter = in_viewport state.vpt obj.pos || is_player collid ||
-      out_of_viewport_below state.vpt obj.pos.y in
+  let viewport_filter = Viewport.in_viewport state.vpt obj.pos || is_player collid ||
+      Viewport.out_of_viewport_below state.vpt obj.pos.y in
   if not obj.kill &&  viewport_filter then begin
     obj.grounded <- false;
     Object.process_obj obj state.map;
     (* Run collision detection if moving object*)
     let evolved = check_collisions collid all_collids state in
     (* Render and update animation *)
-    let vpt_adj_xy = coord_to_viewport state.vpt obj.pos in
+    let vpt_adj_xy = Viewport.coord_to_viewport state.vpt obj.pos in
     Draw.render spr (vpt_adj_xy.x,vpt_adj_xy.y);
     if check_bbox_enabled()
       then Draw.render_bbox spr (vpt_adj_xy.x,vpt_adj_xy.y);
@@ -332,7 +333,7 @@ let translate_keys () =
  * such as viewport centering only occur with the player.*)
 let run_update_collid state collid all_collids =
   match collid with
-  | Player(t,s,o) as p ->
+  | Player(_,s,o) as p ->
       let keys = translate_keys () in
       o.crouch <- false;
       let player = begin match Object.update_player o keys state.ctx with
@@ -377,7 +378,7 @@ let update_loop canvas (player,objs) map_dim =
       map = snd map_dim;
       game_over = false;
   } in
-  (Dom_html.canvasRenderingContext2DToJsObj state.ctx)##scale scale scale;
+  ignore ((Dom_html.canvasRenderingContext2DToJsObj state.ctx)##scale scale scale);
   let rec update_helper time state player objs parts =
       if state.game_over = true then Draw.game_win state.ctx else begin
         collid_objs := [];

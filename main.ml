@@ -1,7 +1,4 @@
 [@@@bs.config {no_export}]
-open Actors
-open Sprite
-open Object
 module Html = Dom_html
 module Pg = Procedural_generator
 
@@ -41,7 +38,7 @@ let preload _ =
     let img = (Html.createImg Dom_html.document) in
     (Dom_html.imageElementToJsObj img)##src #= (img_src) ;
     ignore(Dom_html.addEventListenerImg  img "load"
-    ( (fun ev ->  inc_counter(); Js.true_)) Js.true_)) imgs
+    ( (fun _ev ->  inc_counter(); Js.true_)) Js.true_)) imgs
 
 
 let _ = (Dom_html.windowToJsObj Dom_html.window)##onload #= (fun _ -> ignore (preload()); Js.true_)

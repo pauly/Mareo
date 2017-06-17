@@ -1,9 +1,5 @@
-open Object
 open Sprite
 module Html = Dom_html
-let document = Html.document
-
-let get_context canvas = canvas##getContext "2d"
 
 let render_bbox sprite (posx,posy) =
   let context = Dom_html.canvasRenderingContext2DToJsObj sprite.context in
@@ -22,7 +18,7 @@ let render sprite (posx,posy) =
   let sx = sx +. (float_of_int !(sprite.frame)) *. sw in
   (*print_endline (string_of_int !(sprite.frame));*)
   (*context##clearRect(0.,0.,sw, sh);*)
-  context##drawImage sprite.img sx sy sw sh dx dy dw dh
+  ignore @@ context##drawImage sprite.img sx sy sw sh dx dy dw dh
 
 (*Draws two background images, which needs to be done because of the
  *constantly changing viewport, which is always at most going to be
@@ -59,24 +55,21 @@ let fps canvas fps_val =
 (*game_win displays a black screen when you finish a game.*)
 let game_win ctx =
   let ctx = Dom_html.canvasRenderingContext2DToJsObj ctx in
-  ctx##rect 0. 0. 512. 512.;
-  ctx##fillStyle #= ( "black");
-  ctx##fill ();
-  ctx##fillStyle #= ( "white");
-  ctx##font #= ( "20px 'Press Start 2P'");
-  ctx##fillText ("You win!") 180. 128.;
+  ignore @@ ctx##rect 0. 0. 512. 512.;
+  ignore @@ ctx##fillStyle #= ( "black");
+  ignore @@ ctx##fill ();
+  ignore @@ ctx##fillStyle #= ( "white");
+  ignore @@ ctx##font #= ( "20px 'Press Start 2P'");
+  ignore @@ ctx##fillText ("You win!") 180. 128.;
   failwith "Game over."
 
 (*gave_loss displays a black screen stating a loss to finish that level play.*)
 let game_loss ctx =
   let ctx = Dom_html.canvasRenderingContext2DToJsObj ctx in
-  ctx##rect 0. 0. 512. 512.;
+  ignore @@ ctx##rect 0. 0. 512. 512.;
   ctx##fillStyle #= ( "black");
-  ctx##fill ();
+  ignore @@ ctx##fill ();
   ctx##fillStyle #= ( "white");
   ctx##font #= ( "20px 'Press Start 2P'");
-  ctx##fillText ( "GAME OVER. You lose!") 60. 128.;
+  ignore @@ ctx##fillText ( "GAME OVER. You lose!") 60. 128.;
   failwith "Game over."
-
-let draw_background_color canvas = failwith "todo"
-

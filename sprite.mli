@@ -1,5 +1,3 @@
-open Actors
-
 (* Represents an xy vector *)
 type xy = float * float (* x, y *)
 
@@ -49,4 +47,3 @@ val transform_enemy : Actors.enemy_typ -> sprite -> Actors.dir_1d -> unit
 
 (* Updates the sprite's animation *)
 val update_animation : sprite -> unit
-

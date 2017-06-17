@@ -1,6 +1,3 @@
-open Actors
-open Sprite
-
 (* Template params associated with a particle *)
 type part_params = {
   sprite: Sprite.sprite;  (* Backing sprite *)

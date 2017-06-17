@@ -1,5 +1,4 @@
 open Object
-open Actors
 
 type obj_coord
 
