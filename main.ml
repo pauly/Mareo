@@ -1,3 +1,4 @@
+[@@@bs.config {no_export}]
 open Actors
 open Sprite
 open Object

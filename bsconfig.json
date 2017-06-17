@@ -1,4 +1,5 @@
 {
   "name": "MariOCaml",
   "sources": ".",
+  "package-specs": ["es6"],
 }

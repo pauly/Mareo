@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "bsb -w",
-    "pack": "webpack --entry ./lib/js/main.js  --output-filename _build/main.d.js -w"
+    "pack": "rollup --config -w"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,8 @@
   "homepage": "https://github.com/mahsu/MariOCaml#readme",
   "devDependencies": {
     "bs-platform": "^1.7.5",
-    "webpack": "^2.4.1"
+    "rollup": "^0.43.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-watch": "^4.0.0"
   }
 }
