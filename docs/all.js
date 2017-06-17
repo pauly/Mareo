@@ -8906,12 +8906,10 @@ function inc_counter() {
     document.addEventListener("keydown", keydown, true);
     document.addEventListener("keyup", keyup, true);
     init$4(/* () */0);
-    update_loop(canvas, generate(2400, 256, context), /* tuple */[
-          2400,
-          256
-        ]);
-    console.log("asd");
-    return /* () */0;
+    return update_loop(canvas, generate(2400, 256, context), /* tuple */[
+                2400,
+                256
+              ]);
   } else {
     return /* () */0;
   }

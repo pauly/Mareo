@@ -26,9 +26,7 @@ let load _ =
   let _ = Dom_html.addEventListener Dom_html.document "keydown" (Director.keydown) Js.true_ in
   let _ = Dom_html.addEventListener Dom_html.document "keyup" (Director.keyup) Js.true_ in
   let () = Pg.init () in
-  let _ = Director.update_loop canvas (Pg.generate level_width level_height context) (level_width,level_height) in
-  print_endline "asd";
-  ()
+  Director.update_loop canvas (Pg.generate level_width level_height context) (level_width,level_height)
 
 let inc_counter _ =
   loadCount := !loadCount + 1;

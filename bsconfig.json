@@ -1,5 +1,5 @@
 {
   "name": "MariOCaml",
   "sources": ".",
-  "package-specs": ["es6"],
+  "package-specs": ["es6-global"],
 }
