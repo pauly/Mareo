@@ -1,48 +1,55 @@
-type dir_1d = | Left | Right
-type dir_2d = | North | South | East | West
+type dir_1d =
+  | Left
+  | Right;
+
+type dir_2d =
+  | North
+  | South
+  | East
+  | West;
 
 type xy = {
-  mutable x: float;
-  mutable y: float;
-}
+  mutable x: float,
+  mutable y: float
+};
 
 type controls =
   | CLeft
   | CRight
   | CUp
-  | CDown
+  | CDown;
 
 type pl_typ =
   | BigM
-  | SmallM
+  | SmallM;
 
 type item_typ =
   | Mushroom
   | FireFlower
   | Star
-  | Coin
+  | Coin;
 
 type enemy_typ =
   | Goomba
   | GKoopa
   | RKoopa
   | GKoopaShell
-  | RKoopaShell
+  | RKoopaShell;
 
 type block_typ =
-  | QBlock of item_typ
+  | QBlock item_typ
   | QBlockUsed
   | Brick
   | UnBBlock
   | Cloud
   | Panel
-  | Ground
+  | Ground;
 
 type player_typ =
   | Standing
   | Jumping
   | Running
-  | Crouching
+  | Crouching;
 
 type part_typ =
   | GoombaSquish
@@ -55,10 +62,10 @@ type part_typ =
   | Score1000
   | Score2000
   | Score4000
-  | Score8000
+  | Score8000;
 
 type spawn_typ =
-  | SPlayer of pl_typ * player_typ
-  | SEnemy of enemy_typ
-  | SItem of item_typ
-  | SBlock of block_typ
+  | SPlayer pl_typ player_typ
+  | SEnemy enemy_typ
+  | SItem item_typ
+  | SBlock block_typ;
