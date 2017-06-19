@@ -21,7 +21,7 @@ let load _ => {
   let canvas =
     switch (Dom_html.getElementById Dom_html.document canvas_id) {
     | None =>
-      Printf.printf "cant find canvas %s \n" canvas_id;
+      print_endline ("cant find canvas " ^ canvas_id ^ " \n");
       failwith "fail"
     | Some el => Dom_html.elementToCanvasElement el
     };
