@@ -2,4 +2,5 @@
 .DS_Store
 .merlin
 /node_modules/
-/lib/
+/lib/*
+!/lib/es6_global/
