@@ -1,6 +1,10 @@
-Fork of https://github.com/mahsu/MariOCaml, compiled using [BuckleScript](https://github.com/bucklescript/bucklescript) instead of js_of_ocaml.
+Fork of https://github.com/mahsu/MariOCaml, converted to [Reason](http://facebook.github.io/reason/) and compiled using [BuckleScript](https://github.com/bucklescript/bucklescript).
 
 [Play it live!](http://chenglou.github.io/Mareo/)
+
+## Goal of the Project
+
+See the accompanying blog post [here](https://medium.com/@chenglou/mareo-reason-bucklescript-mario-205ce4c1cbe5)
 
 ## Run It Yourself
 
