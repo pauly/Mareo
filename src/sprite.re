@@ -165,7 +165,7 @@ let make_player pt spr_type =>
 /*Calls to set sprites for each type of object.*/
 let make_type typ (dir: Actors.dir_1d) =>
   switch typ {
-  | SPlayer pt st [@implicit_arity] => make_player pt (st, dir)
+  | SPlayer pt st => make_player pt (st, dir)
   | SEnemy t => make_enemy (t, dir)
   | SItem t => make_item t
   | SBlock t => make_block t

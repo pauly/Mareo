@@ -181,14 +181,12 @@ let process_collision
     :(option Object.collidable, option Object.collidable) => {
   let context = state.ctx;
   switch (c1, c2, dir) {
-  | (Player _ s1 o1 [@implicit_arity], Enemy typ s2 o2 [@implicit_arity], South)
-  | (Enemy typ s2 o2 [@implicit_arity], Player _ s1 o1 [@implicit_arity], North) =>
-    player_attack_enemy s1 o1 typ s2 o2 state context
-  | (Player _ s1 o1 [@implicit_arity], Enemy t2 s2 o2 [@implicit_arity], _)
-  | (Enemy t2 s2 o2 [@implicit_arity], Player _ s1 o1 [@implicit_arity], _) =>
-    enemy_attack_player s1 o1 t2 s2 o2 context
-  | (Player _ _ o1 [@implicit_arity], Item t2 _ o2 [@implicit_arity], _)
-  | (Item t2 _ o2 [@implicit_arity], Player _ _ o1 [@implicit_arity], _) =>
+  | (Player _ s1 o1, Enemy typ s2 o2, South)
+  | (Enemy typ s2 o2, Player _ s1 o1, North) => player_attack_enemy s1 o1 typ s2 o2 state context
+  | (Player _ s1 o1, Enemy t2 s2 o2, _)
+  | (Enemy t2 s2 o2, Player _ s1 o1, _) => enemy_attack_player s1 o1 t2 s2 o2 context
+  | (Player _ _ o1, Item t2 _ o2, _)
+  | (Item t2 _ o2, Player _ _ o1, _) =>
     switch t2 {
     | Mushroom =>
       dec_health o2;
@@ -212,10 +210,9 @@ let process_collision
       update_score state 1000;
       (None, None)
     }
-  | (Enemy t1 s1 o1 [@implicit_arity], Enemy t2 s2 o2 [@implicit_arity], dir) =>
-    col_enemy_enemy t1 s1 o1 t2 s2 o2 dir
-  | (Enemy t1 s1 o1 [@implicit_arity], Block t2 _ o2 [@implicit_arity], East)
-  | (Enemy t1 s1 o1 [@implicit_arity], Block t2 _ o2 [@implicit_arity], West) =>
+  | (Enemy t1 s1 o1, Enemy t2 s2 o2, dir) => col_enemy_enemy t1 s1 o1 t2 s2 o2 dir
+  | (Enemy t1 s1 o1, Block t2 _ o2, East)
+  | (Enemy t1 s1 o1, Block t2 _ o2, West) =>
     switch (t1, t2) {
     | (RKoopaShell, Brick)
     | (GKoopaShell, Brick) =>
@@ -232,15 +229,15 @@ let process_collision
       rev_dir o1 t1 s1;
       (None, None)
     }
-  | (Item _ _ o1 [@implicit_arity], Block _ _ _ [@implicit_arity], East)
-  | (Item _ _ o1 [@implicit_arity], Block _ _ _ [@implicit_arity], West) =>
+  | (Item _ _ o1, Block _ _ _, East)
+  | (Item _ _ o1, Block _ _ _, West) =>
     reverse_left_right o1;
     (None, None)
-  | (Enemy _ _ o1 [@implicit_arity], Block _ _ _ [@implicit_arity], _)
-  | (Item _ _ o1 [@implicit_arity], Block _ _ _ [@implicit_arity], _) =>
+  | (Enemy _ _ o1, Block _ _ _, _)
+  | (Item _ _ o1, Block _ _ _, _) =>
     collide_block dir o1;
     (None, None)
-  | (Player t1 _ o1 [@implicit_arity], Block t _ o2 [@implicit_arity], North) =>
+  | (Player t1 _ o1, Block t _ o2, North) =>
     switch t {
     | QBlock typ =>
       let updated_block = evolve_block o2 context;
@@ -263,7 +260,7 @@ let process_collision
       collide_block dir o1;
       (None, None)
     }
-  | (Player _ _ o1 [@implicit_arity], Block t _ _ [@implicit_arity], _) =>
+  | (Player _ _ o1, Block t _ _, _) =>
     switch t {
     | Panel =>
       Draw.game_win state.ctx;
@@ -349,7 +346,7 @@ let narrow_phase c cs state => {
  * */
 let check_collisions collid all_collids state =>
   switch collid {
-  | Block _ _ _ [@implicit_arity] => []
+  | Block _ _ _ => []
   | _ =>
     let broad = broad_phase collid all_collids state;
     narrow_phase collid broad state
@@ -419,7 +416,7 @@ let translate_keys () => {
  * such as viewport centering only occur with the player.*/
 let run_update_collid state collid all_collids =>
   switch collid {
-  | Player _ s o [@implicit_arity] as p =>
+  | Player _ s o as p =>
     let keys = translate_keys ();
     o.crouch = false;
     let player =
@@ -427,7 +424,7 @@ let run_update_collid state collid all_collids =>
       | None => p
       | Some (new_typ, new_spr) =>
         Object.normalize_pos o.pos s.params new_spr.params;
-        Player new_typ new_spr o [@implicit_arity]
+        Player new_typ new_spr o
       };
     let evolved = update_collidable state player all_collids;
     collid_objs := !collid_objs @ evolved;

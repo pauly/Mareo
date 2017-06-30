@@ -411,7 +411,7 @@ let generate
   let blockw = w /. 16.;
   let blockh = h /. 16. -. 1.;
   let collide_list = generate_helper blockw blockh 0. 0. context;
-  let player = Object.spawn (SPlayer SmallM Standing [@implicit_arity]) context (100., 224.);
+  let player = Object.spawn (SPlayer SmallM Standing) context (100., 224.);
   (player, collide_list)
 };
 

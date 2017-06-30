@@ -136,38 +136,38 @@ let make ::id=None ::dir=Left spawnable context (posx, posy) => {
 let spawn spawnable context (posx, posy) => {
   let (spr, obj) = make spawnable context (posx, posy);
   switch spawnable {
-  | SPlayer typ _ [@implicit_arity] => Player typ spr obj [@implicit_arity]
+  | SPlayer typ _ => Player typ spr obj
   | SEnemy t =>
     set_vel_to_speed obj;
-    Enemy t spr obj [@implicit_arity]
-  | SItem t => Item t spr obj [@implicit_arity]
-  | SBlock t => Block t spr obj [@implicit_arity]
+    Enemy t spr obj
+  | SItem t => Item t spr obj
+  | SBlock t => Block t spr obj
   }
 };
 
 /*Helper methods for getting sprites and objects from their collidables*/
 let get_sprite =
   fun
-  | Player _ s _ [@implicit_arity]
-  | Enemy _ s _ [@implicit_arity]
-  | Item _ s _ [@implicit_arity]
-  | Block _ s _ [@implicit_arity] => s;
+  | Player _ s _
+  | Enemy _ s _
+  | Item _ s _
+  | Block _ s _ => s;
 
 let get_obj =
   fun
-  | Player _ _ o [@implicit_arity]
-  | Enemy _ _ o [@implicit_arity]
-  | Item _ _ o [@implicit_arity]
-  | Block _ _ o [@implicit_arity] => o;
+  | Player _ _ o
+  | Enemy _ _ o
+  | Item _ _ o
+  | Block _ _ o => o;
 
 let is_player =
   fun
-  | Player _ _ _ [@implicit_arity] => true
+  | Player _ _ _ => true
   | _ => false;
 
 let is_enemy =
   fun
-  | Enemy _ _ _ [@implicit_arity] => true
+  | Enemy _ _ _ => true
   | _ => false;
 
 let equals col1 col2 => (get_obj col1).id == (get_obj col2).id;
@@ -238,23 +238,23 @@ let update_player player keys context => {
       BigM
     };
   if (not prev_jumping && player.jumping) {
-    Some (pl_typ, Sprite.make (SPlayer pl_typ Jumping [@implicit_arity]) player.dir context)
+    Some (pl_typ, Sprite.make (SPlayer pl_typ Jumping) player.dir context)
   } else if (
     prev_dir != player.dir || (prev_vx == 0. && abs_float player.vel.x > 0.) && not player.jumping
   ) {
-    Some (pl_typ, Sprite.make (SPlayer pl_typ Running [@implicit_arity]) player.dir context)
+    Some (pl_typ, Sprite.make (SPlayer pl_typ Running) player.dir context)
   } else if (
     prev_dir != player.dir && player.jumping && prev_jumping
   ) {
-    Some (pl_typ, Sprite.make (SPlayer pl_typ Jumping [@implicit_arity]) player.dir context)
+    Some (pl_typ, Sprite.make (SPlayer pl_typ Jumping) player.dir context)
   } else if (
     player.vel.y == 0. && player.crouch
   ) {
-    Some (pl_typ, Sprite.make (SPlayer pl_typ Crouching [@implicit_arity]) player.dir context)
+    Some (pl_typ, Sprite.make (SPlayer pl_typ Crouching) player.dir context)
   } else if (
     player.vel.y == 0. && player.vel.x == 0.
   ) {
-    Some (pl_typ, Sprite.make (SPlayer pl_typ Standing [@implicit_arity]) player.dir context)
+    Some (pl_typ, Sprite.make (SPlayer pl_typ Standing) player.dir context)
   } else {
     None
   }
@@ -331,11 +331,11 @@ let evolve_enemy player_dir typ (spr: Sprite.sprite) obj context =>
   | GKoopa =>
     let (new_spr, new_obj) = make dir::obj.dir (SEnemy GKoopaShell) context (obj.pos.x, obj.pos.y);
     normalize_pos new_obj.pos spr.params new_spr.params;
-    Some (Enemy GKoopaShell new_spr new_obj [@implicit_arity])
+    Some (Enemy GKoopaShell new_spr new_obj)
   | RKoopa =>
     let (new_spr, new_obj) = make dir::obj.dir (SEnemy RKoopaShell) context (obj.pos.x, obj.pos.y);
     normalize_pos new_obj.pos spr.params new_spr.params;
-    Some (Enemy RKoopaShell new_spr new_obj [@implicit_arity])
+    Some (Enemy RKoopaShell new_spr new_obj)
   | GKoopaShell
   | RKoopaShell =>
     obj.dir = player_dir;
@@ -372,7 +372,7 @@ let dec_health obj => {
 let evolve_block obj context => {
   dec_health obj;
   let (new_spr, new_obj) = make (SBlock QBlockUsed) context (obj.pos.x, obj.pos.y);
-  Block QBlockUsed new_spr new_obj [@implicit_arity]
+  Block QBlockUsed new_spr new_obj
 };
 
 /*Used for making a small Mario into a Big Mario*/
@@ -406,10 +406,10 @@ let col_bypass c1 c2 => {
   and o2 = get_obj c2;
   let ctypes =
     switch (c1, c2) {
-    | (Item _ _ _ [@implicit_arity], Enemy _ _ _ [@implicit_arity])
-    | (Enemy _ _ _ [@implicit_arity], Item _ _ _ [@implicit_arity])
-    | (Item _ _ _ [@implicit_arity], Item _ _ _ [@implicit_arity]) => true
-    | (Player _ _ o1 [@implicit_arity], Enemy _ _ _ [@implicit_arity]) =>
+    | (Item _ _ _, Enemy _ _ _)
+    | (Enemy _ _ _, Item _ _ _)
+    | (Item _ _ _, Item _ _ _) => true
+    | (Player _ _ o1, Enemy _ _ _) =>
       if (o1.invuln > 0) {
         true
       } else {
@@ -463,7 +463,7 @@ let check_collision c1 c2 => {
 /*"Kills" the matched object by setting certain parameters for each.*/
 let kill collid ctx =>
   switch collid {
-  | Enemy t _ o [@implicit_arity] =>
+  | Enemy t _ o =>
     let pos = (o.pos.x, o.pos.y);
     let score =
       if (o.score > 0) {
@@ -477,7 +477,7 @@ let kill collid ctx =>
       | _ => []
       };
     score @ remains
-  | Block t _ o [@implicit_arity] =>
+  | Block t _ o =>
     switch t {
     | Brick =>
       let pos = (o.pos.x, o.pos.y);
@@ -488,7 +488,7 @@ let kill collid ctx =>
       [p1, p2, p3, p4]
     | _ => []
     }
-  | Item t _ o [@implicit_arity] =>
+  | Item t _ o =>
     switch t {
     | Mushroom => [Particle.make_score o.score (o.pos.x, o.pos.y) ctx]
     | _ => []
