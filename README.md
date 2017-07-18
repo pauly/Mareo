@@ -1,4 +1,4 @@
-Fork of https://github.com/mahsu/MariOCaml, converted to [Reason](http://facebook.github.io/reason/) and compiled using [BuckleScript](https://github.com/bucklescript/bucklescript).
+Fork of https://github.com/mahsu/MariOCaml, converted to [Reason](http://reasonml.github.io/) and compiled using [BuckleScript](https://github.com/bucklescript/bucklescript).
 
 [Play it live!](http://chenglou.github.io/Mareo/)
 
