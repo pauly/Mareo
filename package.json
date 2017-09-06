@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/chenglou/Mareo#readme",
   "devDependencies": {
-    "bs-platform": "^1.7.5",
+    "bs-platform": "^1.9.1",
     "rollup": "^0.43.0"
   }
 }
