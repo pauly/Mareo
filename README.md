@@ -1,6 +1,6 @@
 Fork of https://github.com/mahsu/MariOCaml, converted to [Reason](http://reasonml.github.io/) and compiled using [BuckleScript](https://github.com/bucklescript/bucklescript).
 
-[Play it live!](http://chenglou.github.io/Mareo/)
+[Play it live!](https://reasonml-community.github.io/Mareo/)
 
 ## Goal of the Project
 
@@ -9,7 +9,7 @@ See the accompanying blog post [here](https://medium.com/@chenglou/mareo-reason-
 ## Run It Yourself
 
 ```
-git clone https://github.com/chenglou/Mareo.git
+git clone https://github.com/reasonml-community/Mareo.git
 cd Mareo
 npm install
 npm start
