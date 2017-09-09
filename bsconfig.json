@@ -1,6 +1,6 @@
 {
   "name": "Mareo",
   "sources": "src",
-  "bsc-flags": ["-bs-super-errors"],
+  "bsc-flags": ["-bs-no-version-header", "-bs-super-errors"],
   "package-specs": ["es6-global"],
 }

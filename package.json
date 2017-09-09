@@ -5,9 +5,9 @@
   "description": "Fork of https://github.com/mahsu/MariOCaml, compiled using BuckleScript instead of js_of_ocaml",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "bsb -w",
     "clean": "bsb -clean-world",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "pack-for-non-safari": "rollup --input ./lib/es6_global/src/main.js --format iife --output docs/all.js"
   },
   "repository": {
