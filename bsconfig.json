@@ -2,5 +2,5 @@
   "name": "Mareo",
   "sources": "src",
   "bsc-flags": ["-bs-no-version-header", "-bs-super-errors"],
-  "package-specs": ["es6-global"],
+  "package-specs": ["es6-global"]
 }
