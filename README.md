@@ -15,6 +15,6 @@ npm install
 npm start
 ```
 
-Then, if you're using Safari, simply open `docs/index_dev.html`. **No bundling needed! Safari supports native es6 modules, which we can compile to**. If not, run `npm run pack-for-es6-less-browsers` then open that html page.
+Then, if you're using Safari or Firefox, simply open `docs/index_dev.html`. **No bundling needed! Safari supports native es6 modules, which we can compile to**. If not, run `npm run pack-for-es6-less-browsers` then open that html page. For Chrome, since there are security restrictions concerning loading local scripts, you'd have to start a small server. Try `python -m SimpleHTTPServer` or something.
 
 (There's also an `index.html` file in that directory. Ignore that; it's just for the github demo.)
