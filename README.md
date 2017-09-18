@@ -15,4 +15,4 @@ npm install
 npm start
 ```
 
-Then, if you're using Safari, simply open `docs/index.html`. **No bundling needed! Safari supports native es6 modules, which we can compile to**. If not, run `npm run pack-for-non-safari` then open that html page.
+Then, if you're using Safari, simply open `docs/index.html`. **No bundling needed! Safari supports native es6 modules, which we can compile to**. If not, run `npm run pack-for-es6-less-browsers` then open that html page.

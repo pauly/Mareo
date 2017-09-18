@@ -8,19 +8,19 @@
     "start": "bsb -w",
     "clean": "bsb -clean-world",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pack-for-non-safari": "rollup --input ./lib/es6_global/src/main.js --format iife --output docs/all.js"
+    "pack-for-es6-less-browsers": "rollup --input ./lib/es6_global/src/Main.js --format iife --output docs/all.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chenglou/Mareo.git"
+    "url": "git+https://github.com/reasonml-community/Mareo.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/chenglou/Mareo/issues"
+    "url": "https://github.com/reasonml-community/Mareo/issues"
   },
-  "homepage": "https://github.com/chenglou/Mareo#readme",
+  "homepage": "https://github.com/reasonml-community/Mareo#readme",
   "devDependencies": {
     "bs-platform": "^1.9.2",
     "rollup": "^0.43.0"
