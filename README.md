@@ -15,4 +15,6 @@ npm install
 npm start
 ```
 
-Then, if you're using Safari, simply open `docs/index.html`. **No bundling needed! Safari supports native es6 modules, which we can compile to**. If not, run `npm run pack-for-es6-less-browsers` then open that html page.
+Then, if you're using Safari, simply open `docs/index_dev.html`. **No bundling needed! Safari supports native es6 modules, which we can compile to**. If not, run `npm run pack-for-es6-less-browsers` then open that html page.
+
+(There's also an `index.html` file in that directory. Ignore that; it's just for the github demo.)
