@@ -23,6 +23,7 @@
   "homepage": "https://github.com/reasonml-community/Mareo#readme",
   "devDependencies": {
     "bs-platform": "^1.9.2",
-    "rollup": "^0.43.0"
+    "rollup": "^0.43.0",
+    "serve": "6.4.3"
   }
 }
